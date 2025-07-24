@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Send to Webhook</title>
+</head>
+<body>
+  <h2>Webhook Submission Form</h2>
+  <form id="webhookForm">
+    <label>Name:</label><br>
+    <input type="text" name="name" required><br><br>
+
+    <label>Email:</label><br>
+    <input type="email" name="email" required><br><br>
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <script>
+    document.getElementById("webhookForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const formData = new FormData(e.target);
+      const jsonData = {};
+
+      formData.forEach((value, key) => {
+        jsonData[key] = value;
+      });
+
+      fetch("https://hooks.zapier.com/hooks/catch/23731183/uu98x4b/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(jsonData)
+      }).then(response => {
+        alert("Data sent successfully!");
+      }).catch(error => {
+        alert("Failed to send data.");
+        console.error(error);
+      });
+    });
+  </script>
+</body>
+</html>
