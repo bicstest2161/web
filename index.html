@@ -1,249 +1,302 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Request Form</title>
-    <style>
-        /* General Body and Font Styles */
-        body {
-            font-family: "Inter", sans-serif;
-            background-color: #f3f4f6;
-            margin: 0;
-        }
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="images/red-super-sports-car.png">
+  <title>Car Dealership Inquiry Form</title>
+  <style>
+    body {
+      background: linear-gradient(to right, #f0f0f0, #ffffff);
+      font-family: 'Segoe UI', sans-serif;
+      padding: 30px;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+    }
 
-        /* Main container for centering the form */
-        .main-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 3rem 1rem; /* Added horizontal padding for mobile */
-            min-height: 100vh;
-            box-sizing: border-box;
-        }
+    #loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: transparent;
+      backdrop-filter: none;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
 
-        /* Form wrapper/card */
-        .form-wrapper {
-            width: 100%;
-            max-width: 42rem; /* max-w-2xl */
-            border-radius: 0.5rem; /* rounded-lg */
-            background-color: white;
-            padding: 2.5rem; /* p-10 */
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-                0 4px 6px -4px rgba(0, 0, 0, 0.1);
-            box-sizing: border-box;
-        }
+    .form-container {
+      display: none;
+      background-color: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      padding: 40px;
+      max-width: 700px;
+      width: 100%;
+    }
 
-        /* Header section for title and description */
-        .form-header {
-            margin-bottom: 2rem; /* mb-8 */
-            text-align: center;
-        }
+    h1 {
+      text-align: center;
+      color: #00457a;
+      margin-bottom: -5px;
+    }
 
-        .form-title {
-            font-size: 1.875rem; /* text-2xl */
-            font-weight: 600; /* font-semibold */
-            color: #1f2937; /* text-gray-800 */
-        }
+    p.description {
+      text-align: center;
+      color: #555;
+      font-size: 15px;
+      margin-bottom: 10px;
+    }
 
-        .form-description {
-            margin-top: 0.5rem; /* mt-2 */
-            font-size: 0.875rem; /* text-sm */
-            color: #4b5563; /* text-gray-600 */
-            line-height: 1.5;
-        }
+    p.required-note {
+      text-align: left;
+      color: #d10000;
+      font-size: 13px;
+      margin-bottom: 30px;
+    }
 
-        /* Container for each form field group */
-        .form-group {
-            margin-bottom: 1.5rem; /* mb-6 */
-        }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: #333;
+    }
 
-        /* Form labels */
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem; /* mb-2 */
-            font-size: 0.875rem; /* text-sm */
-            font-weight: 500; /* font-medium */
-            color: #4b5563; /* text-gray-600 */
-        }
+    .required-asterisk {
+      color: red;
+      margin-left: 4px;
+    }
 
-        /* Common styles for input, select, and textarea */
-        .form-input,
-        .form-select,
-        .form-textarea {
-            width: 100%;
-            border-radius: 0.375rem; /* rounded-md */
-            border: 1px solid #d1d5db; /* border-gray-300 */
-            padding: 0.75rem; /* p-3 */
-            font-size: 0.875rem; /* text-sm */
-            color: #1f2937; /* text-gray-800 */
-            box-sizing: border-box;
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
+    input, textarea {
+      width: 96%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
 
-        .form-input:focus,
-        .form-select:focus,
-        .form-textarea:focus {
-            border-color: #6366f1; /* focus:border-indigo-500 */
-            box-shadow: 0 0 0 1px #6366f1; /* focus:ring-1 focus:ring-indigo-500 */
-            outline: none;
-        }
+    select {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+      color: #d1d0d0;
+    }
 
-        /* Submit Button */
-        .submit-btn {
-            width: 100%;
-            border-radius: 0.375rem; /* rounded-md */
-            background-color: #4f46e5; /* bg-indigo-600 */
-            padding: 0.75rem 1.5rem; /* px-6 py-3 */
-            font-weight: 500; /* font-medium */
-            color: white;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.3s, box-shadow 0.3s;
-        }
+    select.filled {
+      color: #000;
+    }
 
-        .submit-btn:hover {
-            background-color: #4338ca; /* hover:bg-indigo-700 */
-        }
+    select:focus {
+      color: #000;
+    }
 
-        .submit-btn:focus {
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.5); /* focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 */
-        }
+    input[type="submit"] {
+      background-color: #0072ff !important;
+      color: white !important;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      transition: background 0.3s ease;
+      border-radius: 8px;
+    }
 
-        /* Mobile Responsive Styles */
-        @media (max-width: 640px) {
-            .main-container {
-                padding: 1rem;
-            }
-            .form-wrapper {
-                padding: 1.5rem;
-            }
-            .form-title {
-                font-size: 1.5rem;
-            }
-        }
-    </style>
+    input[type="submit"]:hover {
+      background-color: #0058cc !important;
+      cursor: pointer;
+    }
+
+    input {
+      background-color: white !important;
+      color: black !important;
+    }
+
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    input:-internal-autofill-selected {
+      -webkit-box-shadow: 0 0 0 1000px white inset !important;
+      -webkit-text-fill-color: black !important;
+      background-color: white !important;
+      transition: background-color 5000s ease-in-out 0s;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #d1d0d0;
+      opacity: 1;
+    }
+
+    input[type="date"] {
+      color: #888;
+    }
+
+    input[type="date"].filled {
+      color: #000;
+    }
+
+    input[type="date"]:focus {
+      color: #000;
+    }
+  </style>
 </head>
 <body>
-    <div class="main-container">
-        <div class="form-wrapper">
-            <form action="https://hooks.zapier.com/hooks/catch/23731183/uu98x4b/" method="POST">
-                <div class="form-header">
-                    <h2 class="form-title">Request Form</h2>
-                    <p class="form-description">
-                        Please fill in the necessary details for your request.
-                    </p>
-                </div>
 
-                <!-- First Name -->
-                <div class="form-group">
-                    <label for="firstname" class="form-label">First Name*</label>
-                    <input
-                        type="text"
-                        name="firstname"
-                        id="firstname"
-                        class="form-input"
-                        placeholder="Enter your first name"
-                        required
-                    />
-                </div>
+  <!-- 🔄 Loading Screen -->
+  <div id="loading-screen">
+    <img src="images/loading-loader.gif" alt="Loading..." />
+  </div>
 
-                <!-- Last Name -->
-                <div class="form-group">
-                    <label for="lastname" class="form-label">Last Name*</label>
-                    <input
-                        type="text"
-                        name="lastname"
-                        id="lastname"
-                        class="form-input"
-                        placeholder="Enter your last name"
-                        required
-                    />
-                </div>
-
-                <!-- Email -->
-                <div class="form-group">
-                    <label for="email" class="form-label">Email Address*</label>
-                    <input
-                        type="email"
-                        name="email"
-                        id="email"
-                        class="form-input"
-                        placeholder="Enter your email"
-                        required
-                    />
-                </div>
-
-                <!-- Phone Number -->
-                <div class="form-group">
-                    <label for="phone" class="form-label">Phone Number*</label>
-                    <input
-                        type="tel"
-                        name="phone"
-                        id="phone"
-                        class="form-input"
-                        placeholder="Enter your phone number"
-                        required
-                    />
-                </div>
-
-                <!-- Car Preference -->
-                <div class="form-group">
-                    <label for="car-preference" class="form-label">Car Preference*</label>
-                    <select name="car-preference" id="car-preference" class="form-select" required>
-                        <option value="sedan">Sedan</option>
-                        <option value="suv">SUV</option>
-                        <option value="sports">Sports</option>
-                        <option value="electric">Electric</option>
-                    </select>
-                </div>
-
-                <!-- Company Preference -->
-                <div class="form-group">
-                    <label for="company-preference" class="form-label">Company Preference*</label>
-                    <select name="company-preference" id="company-preference" class="form-select" required>
-                        <option value="company-a">Company A</option>
-                        <option value="company-b">Company B</option>
-                        <option value="company-c">Company C</option>
-                    </select>
-                </div>
-
-                <!-- Expected Price -->
-                <div class="form-group">
-                    <label for="expected-price" class="form-label">Expected Price*</label>
-                    <input
-                        type="number"
-                        name="expected-price"
-                        id="expected-price"
-                        class="form-input"
-                        placeholder="Enter expected price"
-                        required
-                    />
-                </div>
-
-                <!-- Delivery Date (Only today and future dates) -->
-                <div class="form-group">
-                    <label for="delivery-date" class="form-label">Delivery Date*</label>
-                    <input
-                        type="date"
-                        name="delivery-date"
-                        id="delivery-date"
-                        class="form-input"
-                        required
-                        min=""
-                    />
-                </div>
-
-                <!-- Submit Button -->
-                <button type="submit" class="submit-btn">Submit Request</button>
-            </form>
-        </div>
+  <!-- 📝 Main Form -->
+  <div class="form-container">
+    <div style="text-align:center; margin-bottom: 20px;">
+      <img src="images/Bicsglobal_Logo_v1.png" alt="Bics Logo" height="100">
     </div>
 
-    <script>
-        // Set today's date as the minimum for the date picker
-        document.getElementById('delivery-date').min = new Date().toISOString().split('T')[0];
-    </script>
+    <h1>
+      <img src="images/red-super-sports-car.png" alt="Car Icon" height="57" style="vertical-align: middle; padding-bottom: 8px;">
+      Car Dealership Inquiry Form
+    </h1>
+
+    <p class="description">Please fill out this form to get a personalized quote for your preferred car.</p>
+
+    <form 
+      action="https://hooks.zapier.com/hooks/catch/23731183/uu3uozs/" 
+      method="POST" 
+      target="hidden_iframe" 
+      onsubmit="return handleSubmit();"
+    >
+      <label for="first_name">First Name<span class="required-asterisk">*</span></label>
+      <input type="text" name="first_name" id="first_name" required placeholder="Enter your first name">
+
+      <label for="last_name">Last Name</label>
+      <input type="text" name="last_name" id="last_name" placeholder="Enter your last name">
+
+      <label for="email">Email Address<span class="required-asterisk">*</span></label>
+      <input type="email" name="email" id="email" required placeholder="Enter your email id">
+
+      <label for="phone">Phone Number</label>
+      <input type="text" name="phone" id="phone" placeholder="Enter your phone number">
+
+      <label for="car_model">Preferred Car Model<span class="required-asterisk">*</span></label>
+      <select name="car_model" id="car_model" required>
+        <option value="">-- Select --</option>
+        <option value="Tesla Model 3">Tesla Model 3</option>
+        <option value="BMW X5">BMW X5</option>
+        <option value="Audi Q5">Audi Q5</option>
+        <option value="Mercedes C-Class">Mercedes C-Class</option>
+        <option value="Hyundai Ioniq 5">Hyundai Ioniq 5</option>
+      </select>
+
+      <label for="budget_range">Budget Range</label>
+      <select name="budget_range" id="budget_range">
+        <option value="">-- Select --</option>
+        <option value="$20,000 – $30,000">$20,000 – $30,000</option>
+        <option value="$30,000 – $40,000">$30,000 – $40,000</option>
+        <option value="$40,000 – $50,000">$40,000 – $50,000</option>
+        <option value="$50,000+">$50,000+</option>
+      </select>
+
+      <label for="lease_company">Lease Company<span class="required-asterisk">*</span></label>
+      <select name="lease_company" id="lease_company" required>
+        <option value="">-- Select --</option>
+        <option value="CompanyA">CompanyA</option>
+        <option value="CompanyB">CompanyB</option>
+        <option value="CompanyC">CompanyC</option>
+      </select>
+
+      <label for="contact_method">Preferred Contact Method</label>
+      <select name="contact_method" id="contact_method">
+        <option value="">-- Select --</option>
+        <option value="Phone">Phone</option>
+        <option value="Email">Email</option>
+        <option value="WhatsApp">WhatsApp</option>
+        <option value="Teams">Teams</option>
+      </select>
+
+      <label for="lease_from_date">Lease Duration From<span class="required-asterisk">*</span></label>
+      <input type="date" name="lease_from_date" id="lease_from_date" required>
+
+      <label for="lease_to_date">Lease Duration To<span class="required-asterisk">*</span></label>
+      <input type="date" name="lease_to_date" id="lease_to_date" required>
+
+      <label for="lease_days">Number of Total Lease Days</label>
+      <input type="text" id="lease_days" name="lease_days" readonly placeholder="Auto-calculated">
+
+      <label for="notes">Additional Message / Notes</label>
+      <textarea name="notes" id="notes" rows="4" placeholder="Example: Looking for a white Tesla with autopilot."></textarea>
+
+      <p class="required-note">Please fill out all mandatory fields (*)</p>
+      <input type="submit" value="Send Inquiry">
+    </form>
+
+    <iframe name="hidden_iframe" style="display:none;"></iframe>
+  </div>
+
+  <script>
+    function handleSubmit() {
+      const email = document.getElementById("email").value;
+
+      document.getElementById("loading-screen").style.display = "flex";
+      document.querySelector(".form-container").style.display = "none";
+
+      setTimeout(() => {
+        window.location.href = `thank-you-page.html?email=${encodeURIComponent(email)}`;
+      }, 1500);
+
+      return true;
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const today = new Date().toISOString().split("T")[0];
+      document.getElementById("lease_from_date").setAttribute("min", today);
+      document.getElementById("lease_to_date").setAttribute("min", today);
+
+      document.getElementById("loading-screen").style.display = "none";
+      document.querySelector(".form-container").style.display = "block";
+    });
+
+    document.querySelectorAll('select').forEach(function(select) {
+      if (select.value) select.classList.add('filled');
+      select.addEventListener('change', function () {
+        if (this.value) {
+          this.classList.add('filled');
+        } else {
+          this.classList.remove('filled');
+        }
+      });
+    });
+
+    const fromDate = document.getElementById("lease_from_date");
+    const toDate = document.getElementById("lease_to_date");
+    const leaseDays = document.getElementById("lease_days");
+
+    function calculateLeaseDays() {
+      if (fromDate.value && toDate.value) {
+        const from = new Date(fromDate.value);
+        const to = new Date(toDate.value);
+
+        if (to < from) {
+          alert("Lease Duration To cannot be earlier than From date.");
+          toDate.value = "";
+          leaseDays.value = "";
+          return;
+        }
+
+        const timeDiff = to - from;
+        const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24)) + 1;
+        leaseDays.value = `${daysDiff} day${daysDiff > 1 ? 's' : ''}`;
+      }
+    }
+
+    fromDate.addEventListener("change", calculateLeaseDays);
+    toDate.addEventListener("change", calculateLeaseDays);
+  </script>
 </body>
 </html>
