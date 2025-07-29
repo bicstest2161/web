@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Thank You - Car Inquiry</title>
+  <link rel="icon" href="images/red-super-sports-car.png" type="image/png" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #f0f0f0, #ffffff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .thank-you-container {
+      font-family: monospace;
+      text-align: center;
+      background-color: #fff;
+      padding: 50px 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      max-width: 700px;
+      width: 100%;
+    }
+
+    h1 {
+      color: #013c83;
+      font-size: 43px;
+      margin: 0 0 10px;
+    }
+
+    p.description {
+      font-family: Geneva;
+      color: #333;
+      font-size: 18px;
+      margin-bottom: 30px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 14px 28px;
+      background-color: #0072ff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 18px;
+      text-decoration: none;
+      transition: background 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: #0058cc;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 32px;
+      }
+
+      .btn {
+        padding: 12px 20px;
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="thank-you-container">
+    <div style="text-align:center; margin-bottom: 20px;">
+      <img src="images/Bicsglobal_Logo_v1.png" alt="Bics Logo" height="100">
+    </div>
+
+    <h1>Thank You!</h1>
+    <p class="description">
+      Your inquiry has been submitted successfully. <br>
+      Details sent to your mail <span id="email-text" style="font-weight: bold;"></span>, please check.
+    </p>
+    <a href="index.html" class="btn">Check Another Inquiry</a>
+  </div>
+
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
+      const params = new URLSearchParams(window.location.search);
+      const email = params.get("email");
+      if (email) {
+        document.getElementById("email-text").textContent = email;
+      }
+    });
+  </script>
+</body>
+</html>
